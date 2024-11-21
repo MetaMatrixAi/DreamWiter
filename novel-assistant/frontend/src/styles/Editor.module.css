@@ -1,34 +1,84 @@
-/* 编辑器容器样式 */
+/* 主容器样式 */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%; /* 占满整个视口高度 */
+  width: 100%;
+  background-color: #ffffff;
+}
+
+/* 工具栏样式 */
+.toolbar {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
+  width: 100%;
+  max-width: 900px; /* 更宽的工具栏 */
+}
+
+.toolbar button {
+  background-color: #f7f7f7; /* 浅灰色背景 */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 16px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease; /* 平滑过渡动画 */
+}
+
+.toolbar button:hover {
+  background-color: #e6e6e6; /* 更明显的 hover 效果 */
+}
+
+.toolbar button:active {
+  background-color: #dcdcdc;
+}
+
+/* 编辑器样式 */
 .editor {
   width: 100%;
-  height: 300px; /* 可根据需求调整高度 */
+  max-width: 1200px; /* 与工具栏一致宽度 */
+  min-height: 300px; /* 设置最小高度 */
+  height: auto; /* 自适应高度 */
+  max-height: 80vh; /* 防止过高 */
   padding: 10px;
   font-size: 16px;
   line-height: 1.5;
-  color: #333; /* 文字颜色 */
-  background-color: #fff; /* 背景颜色 */
-  border: 1px solid #ccc; /* 边框样式 */
-  border-radius: 4px; /* 圆角 */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 阴影 */
-  overflow-y: auto; /* 内容超出时滚动 */
+  color: #333;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
 }
 
-/* 编辑器的焦点状态 */
 .editor:focus {
-  border-color: #1890ff; /* 聚焦时的边框颜色 */
-  outline: none; /* 去掉默认的外边框 */
-  box-shadow: 0 0 6px rgba(24, 144, 255, 0.4); /* 聚焦阴影效果 */
+  border-color: #1890ff;
+  outline: none;
+  box-shadow: 0 0 6px rgba(24, 144, 255, 0.4);
 }
 
 /* 段落样式 */
 .editor p {
   margin: 0;
   padding: 0;
-  white-space: pre-wrap; /* 保留换行 */
+  white-space: pre-wrap;
 }
 
-/* 鼠标选区样式（现代浏览器支持） */
+/* 鼠标选区样式 */
 ::selection {
-  background-color: #d5e8ff; /* 选中文本背景颜色 */
-  color: #000; /* 选中文本字体颜色 */
+  background-color: #d5e8ff;
+  color: #000;
+}
+
+/* 全局样式 */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }

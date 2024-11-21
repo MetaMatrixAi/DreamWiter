@@ -1,59 +1,66 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import styles from '../styles/Editor.module.css';
-import { getSelectionRange, setCursorPosition } from '../utils/SelectionUtils';
 
 const TextEditor = () => {
-  const editorRef = useRef<HTMLDivElement>(null); // 编辑器的引用
-  const [cursorPosition, setCursorPositionState] = useState({ start: 0, end: 0 });
+  const editorRef = useRef<HTMLDivElement>(null);
+  const [content, setContent] = useState(''); // 保存内容状态
 
-  // 光标更新逻辑
-  const handleMouseUp = () => {
-    if (editorRef.current) {
-      const selection = getSelectionRange(editorRef.current);
-      if (selection) {
-        setCursorPositionState({ start: selection.start, end: selection.end });
-      }
-    }
+  // 富文本命令执行
+  const applyCommand = (command: string) => {
+    document.execCommand(command);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (editorRef.current) {
-      const selection = getSelectionRange(editorRef.current);
-
-      // 扩展选区逻辑 (Shift + 方向键)
-      if (e.shiftKey && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) {
-        e.preventDefault();
-        if (selection) {
-          const offset = e.key === 'ArrowLeft' ? -1 : 1;
-          setCursorPositionState({
-            start: selection.start,
-            end: Math.max(0, selection.end + offset),
-          });
-        }
+  // 自动保存内容
+  useEffect(() => {
+    const saveInterval = setInterval(() => {
+      if (editorRef.current) {
+        setContent(editorRef.current.innerHTML);
+        console.log('Content saved:', editorRef.current.innerHTML); // 模拟保存到后端
       }
+    }, 2000);
 
-      // 光标跳转逻辑
-      if (!e.shiftKey && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) {
-        const offset = e.key === 'ArrowLeft' ? -1 : 1;
-        if (selection) {
-          const newPos = Math.max(0, selection.start + offset);
-          setCursorPositionState({ start: newPos, end: newPos });
-          setCursorPosition(editorRef.current, newPos);
+    return () => clearInterval(saveInterval);
+  }, []);
+
+  // 自动滚动处理
+  const handleScroll = () => {
+    if (editorRef.current) {
+      const selection = document.getSelection();
+      if (selection && selection.rangeCount > 0) {
+        const range = selection.getRangeAt(0);
+        const rect = range.getBoundingClientRect();
+        const editorRect = editorRef.current.getBoundingClientRect();
+
+        // 检查是否超出编辑器的顶部或底部
+        if (rect.bottom > editorRect.bottom) {
+          editorRef.current.scrollTop += rect.bottom - editorRect.bottom;
+        } else if (rect.top < editorRect.top) {
+          editorRef.current.scrollTop -= editorRect.top - rect.top;
         }
       }
     }
   };
 
   return (
-    <div
-      ref={editorRef}
-      className={styles.editor}
-      contentEditable
-      onMouseUp={handleMouseUp}
-      onKeyDown={handleKeyDown}
-      suppressContentEditableWarning
-    >
-      <p>Start typing here...</p>
+    <div>
+      {/* 工具栏 */}
+      <div className={styles.toolbar}>
+        <button onClick={() => applyCommand('bold')}><b>B</b></button>
+        <button onClick={() => applyCommand('italic')}><i>I</i></button>
+        <button onClick={() => applyCommand('underline')}><u>U</u></button>
+      </div>
+
+      {/* 可编辑区域 */}
+      <div
+        ref={editorRef}
+        className={styles.editor}
+        contentEditable
+        onMouseUp={handleScroll}
+        onKeyDown={handleScroll}
+        suppressContentEditableWarning
+      >
+        <p>Start typing here...</p>
+      </div>
     </div>
   );
 };
