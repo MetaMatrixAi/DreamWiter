@@ -1,0 +1,34 @@
+/* 编辑器容器样式 */
+.editor {
+  width: 100%;
+  height: 300px; /* 可根据需求调整高度 */
+  padding: 10px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333; /* 文字颜色 */
+  background-color: #fff; /* 背景颜色 */
+  border: 1px solid #ccc; /* 边框样式 */
+  border-radius: 4px; /* 圆角 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 阴影 */
+  overflow-y: auto; /* 内容超出时滚动 */
+}
+
+/* 编辑器的焦点状态 */
+.editor:focus {
+  border-color: #1890ff; /* 聚焦时的边框颜色 */
+  outline: none; /* 去掉默认的外边框 */
+  box-shadow: 0 0 6px rgba(24, 144, 255, 0.4); /* 聚焦阴影效果 */
+}
+
+/* 段落样式 */
+.editor p {
+  margin: 0;
+  padding: 0;
+  white-space: pre-wrap; /* 保留换行 */
+}
+
+/* 鼠标选区样式（现代浏览器支持） */
+::selection {
+  background-color: #d5e8ff; /* 选中文本背景颜色 */
+  color: #000; /* 选中文本字体颜色 */
+}
